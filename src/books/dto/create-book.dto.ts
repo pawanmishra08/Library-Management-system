@@ -6,7 +6,7 @@ export class CreateBookDto {
     @IsString()
     title: string;
 
-    @IsOptional()
+    @IsNotEmpty()
     @IsString()
     author : string;
 
@@ -14,9 +14,8 @@ export class CreateBookDto {
    @IsOptional()
    price: number;
 
-   @IsString()
    @IsBoolean()
    @IsOptional()
-   available: Boolean;
+   available: boolean;
 
 }

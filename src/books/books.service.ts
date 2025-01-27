@@ -2,7 +2,6 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Book } from './entities/book.entity';
 
 
 
@@ -11,18 +10,19 @@ export class BooksService {
   constructor(private readonly prismaService: PrismaService){}
 
    async create(createBookDto: CreateBookDto) {
-
+    // const book  = await this.prismaService.books.create({data: createBookDto});
+    // return book;
     const book = await this.prismaService.books.findFirst({
       where: {
-        name: createBookDto.title,
+        title : createBookDto.title,
       },
     });
 
-   if (book) {
+    if (book) {
      throw new BadRequestException (`Books ${createBookDto.title} has been alreadyyyyy taken`);
-   }
+    }
 
-   return this.prismaService.books.create({ data: createBookDto});
+   return this.prismaService.books.create({ data: createBookDto},);
     //return 'This action adds a new book';
   }
 
@@ -60,12 +60,12 @@ export class BooksService {
   }
 
   private async getBooksById(id: number) {
-    const role = await this.prismaService.books.findFirst({ where: { id } });
+    const book = await this.prismaService.books.findFirst({ where: { id } });
 
-    if (!role) {
+    if (!book) {
       throw new NotFoundException(`Books with id ${id} does not exist`);
     }
 
-    return Book;
+    return book;
   }
 }
