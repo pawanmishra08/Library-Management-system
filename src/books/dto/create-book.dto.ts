@@ -10,7 +10,7 @@ export class CreateBookDto {
     @IsString()
     author : string;
 
-   @IsString()
+   @IsNumber()
    @IsOptional()
    price: number;
 

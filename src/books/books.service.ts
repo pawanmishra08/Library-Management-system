@@ -40,6 +40,9 @@ export class BooksService {
    const book = await this.prismaService.books.findFirst({
     where: {
       title: updateBookDto.title,
+      author: updateBookDto.author,
+      price: updateBookDto.price,
+      available: updateBookDto.available,
     },
    });
 
