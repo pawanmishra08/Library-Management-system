@@ -16,7 +16,7 @@ datasource db {
 model Books {
   @@map("books")
   id Int @id @default(autoincrement())
-  title String
+  title String  @unique
   author String
   price Float @default(0)
   available Boolean @default(false)
