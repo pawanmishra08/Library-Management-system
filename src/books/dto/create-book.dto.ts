@@ -18,4 +18,8 @@ export class CreateBookDto {
    @IsOptional()
    available: boolean;
 
+   @IsNotEmpty()
+   @IsNumber()
+   publisher_id: number;
+
 }

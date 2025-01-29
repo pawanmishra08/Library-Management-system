@@ -13,11 +13,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Books {
+model Book {
   @@map("books")
   id Int @id @default(autoincrement())
   title String  @unique
   author String
   price Float @default(0)
   available Boolean @default(false)
+  publisher_id Int
+
+ publisher Publisher @relation(fields: [publisher_id], references: [id], onDelete: Cascade)
+}
+
+model Publisher {
+  @@map("publishers")
+  id Int @id @default(autoincrement())
+  name String @unique
+  address String
+
+  books Book[]
 }

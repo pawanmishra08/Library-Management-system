@@ -2,32 +2,33 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-
-
+import { Book } from './entities/book.entity';
 
 @Injectable()
 export class BooksService {
   constructor(private readonly prismaService: PrismaService){}
 
    async create(createBookDto: CreateBookDto) {
-    // const book  = await this.prismaService.books.create({data: createBookDto});
-    // return book;
-    const book = await this.prismaService.books.findFirst({
+    const book = await this.prismaService.book.findFirst({
       where: {
         title : createBookDto.title,
       },
     });
 
+    if( await this.checkIfBooksExist(createBookDto.title)){
+      throw new BadRequestException(`Books with ${createBookDto.title} has been already taken`);
+    }
+
     if (book) {
      throw new BadRequestException (`Books ${createBookDto.title} has been alreadyyyyy taken`);
     }
 
-   return this.prismaService.books.create({ data: createBookDto},);
-    //return 'This action adds a new book';
+   return this.prismaService.book.create({ data:  createBookDto });
+
   }
 
   findAll() {
-    return this.prismaService.books.findMany();
+    return this.prismaService.book.findMany();
   }
 
   findOne(id: number) {
@@ -37,19 +38,20 @@ export class BooksService {
    async update(id: number, updateBookDto: UpdateBookDto) {
    await this.getBooksById(id);
 
-   const book = await this.prismaService.books.findFirst({
+   const book = await this.prismaService.book.findFirst({
     where: {
       title: updateBookDto.title,
       author: updateBookDto.author,
       price: updateBookDto.price,
       available: updateBookDto.available,
+      publisher_id : updateBookDto.publisher_id
     },
    });
 
    if(book && book.id !== id) {
     throw new BadRequestException(`book with ${updateBookDto.title} has been alreadyyyy taken`);
    }
-    return this.prismaService.books.update({
+    return this.prismaService.book.update({
       where: { id} ,
       data: updateBookDto,
     });
@@ -57,13 +59,26 @@ export class BooksService {
 
    async remove(id: number) {
     await this.getBooksById(id);
-    return this.prismaService.books.delete({
+    return this.prismaService.book.delete({
       where: { id}
     });
   }
 
+  private async checkIfBooksExist(title: string, id?: number): Promise<boolean> {
+    const organization = await this.prismaService.book.findFirst(
+      { where: { title }
+    })
+
+    if (id) {
+      return Book ? Book.id === id: true;
+      //return book ? Book.name === name : true;
+    }
+
+    return !!Book;
+  }
+
   private async getBooksById(id: number) {
-    const book = await this.prismaService.books.findFirst({ where: { id } });
+    const book = await this.prismaService.book.findFirst({ where: { id } });
 
     if (!book) {
       throw new NotFoundException(`Books with id ${id} does not exist`);
