@@ -65,16 +65,15 @@ export class BooksService {
   }
 
   private async checkIfBooksExist(title: string, id?: number): Promise<boolean> {
-    const organization = await this.prismaService.book.findFirst(
+    const book = await this.prismaService.book.findFirst(
       { where: { title }
     })
 
     if (id) {
-      return Book ? Book.id === id: true;
-      //return book ? Book.name === name : true;
+      return book ? book.id === id: true;
     }
 
-    return !!Book;
+    return !!book;
   }
 
   private async getBooksById(id: number) {
