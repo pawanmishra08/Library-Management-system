@@ -3,15 +3,20 @@ import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Book } from './entities/book.entity';
+import { captalizeFirstLetterOfEachWordInPhrase } from 'src/helpers/captialize';
 
 @Injectable()
 export class BooksService {
   constructor(private readonly prismaService: PrismaService){}
 
    async create(createBookDto: CreateBookDto) {
+    createBookDto.title = captalizeFirstLetterOfEachWordInPhrase(createBookDto.title);
+
     const book = await this.prismaService.book.findFirst({
       where: {
         title : createBookDto.title,
+        author: createBookDto.author,
+        publisher_id: createBookDto.publisher_id,
       },
     });
 

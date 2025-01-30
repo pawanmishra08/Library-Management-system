@@ -1,3 +1,1 @@
-export class Book {
-  static id: number;
-}
+export class Book {}

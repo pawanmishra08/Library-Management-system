@@ -33,3 +33,11 @@ model Publisher {
 
   books Book[]
 }
+
+model Member {
+  @@map("members")
+  id Int @id @default(autoincrement())
+  name String @unique
+  address String
+  membership_expiry_date Float @default(0)
+}

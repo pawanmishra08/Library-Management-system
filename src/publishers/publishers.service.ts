@@ -2,12 +2,14 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { CreatePublisherDto } from './dto/create-publisher.dto';
 import { UpdatePublisherDto } from './dto/update-publisher.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { captalizeFirstLetterOfEachWordInPhrase } from 'src/helpers/captialize';
 
 @Injectable()
 export class PublishersService {
   constructor( private readonly prismaService: PrismaService) {}
 
    async create(createPublisherDto: CreatePublisherDto) {
+    createPublisherDto.name= captalizeFirstLetterOfEachWordInPhrase(createPublisherDto.name);
 
     const publisher = await this.prismaService.publisher.findFirst({
       where: {
