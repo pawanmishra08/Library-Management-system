@@ -23,6 +23,8 @@ model Book {
   publisher_id Int
 
  publisher Publisher @relation(fields: [publisher_id], references: [id], onDelete: Cascade)
+
+ borrowers Borrower[]
 }
 
 model Publisher {
@@ -40,4 +42,20 @@ model Member {
   name String @unique
   address String
   membership_expiry_date Float @default(0)
+
+  borrowers Borrower[]
+}
+
+model Borrower {
+  @@map("borrowers")
+  id Int @id @default(autoincrement())
+  book_name String
+  issuse_date Int @default(0)
+  due_date Int @default(0)
+  return_date Int @default(0)
+  book_id Int
+  member_id Int
+
+ books Book @relation(fields: [book_id], references: [id], onDelete: Cascade)
+ members Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
 }

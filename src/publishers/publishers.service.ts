@@ -34,7 +34,7 @@ export class PublishersService {
    async update(id: number, updatePublisherDto: UpdatePublisherDto) {
    return this.getPublisherById(id);
 
-   const publisher = await this.prismaService.publisher.findFirst({
+    const publisher = await this.prismaService.publisher.findFirst({
     where: {
      name: updatePublisherDto.name,
      address: updatePublisherDto.address,
