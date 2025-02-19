@@ -21,6 +21,8 @@ model Book {
   price Float @default(0)
   available Boolean @default(false)
   publisher_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
 
  publisher Publisher @relation(fields: [publisher_id], references: [id], onDelete: Cascade)
 
@@ -32,6 +34,8 @@ model Publisher {
   id Int @id @default(autoincrement())
   name String @unique
   address String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
 
   books Book[]
 }
@@ -42,6 +46,8 @@ model Member {
   name String @unique
   address String
   membership_expiry_date Float @default(0)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
 
   borrowers Borrower[]
 }
@@ -55,6 +61,8 @@ model Borrower {
   return_date Int @default(0)
   book_id Int
   member_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
 
  books Book @relation(fields: [book_id], references: [id], onDelete: Cascade)
  members Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
