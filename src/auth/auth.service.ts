@@ -34,9 +34,9 @@ export class AuthService{
         if(!(await compare(loginDto.password, user.password))) {
             throw new UnauthorizedException('Invalid credientials');
         }
-        const OTP = await this.jwtService.signAsync({user});
+        const token = await this.jwtService.signAsync({user});
 
-        return { OTP,};
+        return { token,};
     }
 }
 
