@@ -27,6 +27,8 @@ model Book {
  publisher Publisher @relation(fields: [publisher_id], references: [id], onDelete: Cascade)
 
  borrowers Borrower[]
+
+ users User[]
 }
 
 model Publisher {
@@ -50,6 +52,8 @@ model Member {
   updated_at DateTime @default(now())
 
   borrowers Borrower[]
+
+  users User[]
 }
 
 model Borrower {
@@ -68,3 +72,19 @@ model Borrower {
  members Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
 }
 
+model User {
+  @@map("users")
+
+ id Int @id @default(autoincrement())
+ book_id Int
+ member_id Int
+ name String
+ email String @unique
+ mobile String @unique @db.VarChar(15)
+ password String
+ created_at DateTime @default(now())
+ updated_at DateTime @default(now())
+
+ books Book @relation( fields: [book_id], references: [id], onDelete: Cascade)
+ members Member @relation( fields: [member_id], references: [id], onDelete: Cascade)
+}
