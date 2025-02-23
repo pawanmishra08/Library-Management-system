@@ -60,7 +60,7 @@ model Borrower {
   @@map("borrowers")
   id Int @id @default(autoincrement())
   book_name String
-  issuse_date Int @default(0)
+  issue_date Int @default(0)
   due_date Int @default(0)
   return_date Int @default(0)
   book_id Int
