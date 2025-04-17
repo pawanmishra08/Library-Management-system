@@ -1,0 +1,90 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Book {
+  @@map("books")
+  id Int @id @default(autoincrement())
+  title String  @unique
+  author String
+  price Float @default(0)
+  available Boolean @default(false)
+  publisher_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+ publisher Publisher @relation(fields: [publisher_id], references: [id], onDelete: Cascade)
+
+ borrowers Borrower[]
+
+ users User[]
+}
+
+model Publisher {
+  @@map("publishers")
+  id Int @id @default(autoincrement())
+  name String @unique
+  address String?
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  books Book[]
+}
+
+model Member {
+  @@map("members")
+  id Int @id @default(autoincrement())
+  name String @unique
+  address String
+  membership_expiry_date Float @default(0)
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  borrowers Borrower[]
+
+  users User[]
+}
+
+model Borrower {
+  @@map("borrowers")
+  id Int @id @default(autoincrement())
+  book_name String
+  issue_date Int @default(0)
+  due_date Int @default(0)
+  return_date Int @default(0)
+  book_id Int
+  member_id Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+ books Book @relation(fields: [book_id], references: [id], onDelete: Cascade)
+ members Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
+}
+
+model User {
+  @@map("users")
+
+ id Int @id @default(autoincrement())
+ book_id Int
+ member_id Int
+ name String
+ email String @unique
+ mobile String @unique @db.VarChar(15)
+ password String
+ created_at DateTime @default(now())
+ updated_at DateTime @default(now())
+
+ books Book @relation( fields: [book_id], references: [id], onDelete: Cascade)
+ members Member @relation( fields: [member_id], references: [id], onDelete: Cascade)
+}
