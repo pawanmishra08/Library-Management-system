@@ -10,11 +10,11 @@ async function bootstrap() {
 
   //all middlewares are registered here!
   app.useGlobalPipes(new ValidationPipe());
-  // app.useGlobalGuards(
-  //   new AuthGuard(
-  //     new JwtService(),
-  //     new Reflector(),
-  //   ))
+  app.useGlobalGuards(
+    new AuthGuard(
+      new JwtService(),
+      new Reflector(),
+    ))
 
   //app listens and application starts here!
   await app.listen(3000);

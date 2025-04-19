@@ -1,14 +1,14 @@
-import { IsNotEmpty, IsNumber, IsOptional, isString, IsString, MaxLength } from "class-validator";
+import { IsNotEmpty, IsNumber, IsOptional,IsString, MaxLength } from "class-validator";
 
 export class CreateUserDto {
 
-    @IsOptional()
+    @IsNotEmpty()
     @IsNumber()
     book_id: number;
 
     @IsNotEmpty()
     @IsString()
-    book: string;
+    title: string;
 
     @IsNotEmpty()
     @IsNumber()

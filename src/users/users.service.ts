@@ -18,14 +18,14 @@ export class UsersService {
 
       const bookobj = await this.prismaService.book.findFirst({
         where:{
-          title: createUserDto.book,
+          title: createUserDto.title,
         },
       });
       if(!bookobj) {
-        throw new NotFoundException(` unable to find the Book with title ${createUserDto.book}`)
+        throw new NotFoundException(`unable to find the Book with title ${createUserDto.title}`)
       }
       createUserDto.book_id = bookobj.id;
-      const { book , ...rest } = createUserDto;
+      const { title , ...rest } = createUserDto;
 
       rest.name = captalizeFirstLetterOfEachWordInPhrase(rest.name);
 
@@ -63,7 +63,7 @@ export class UsersService {
       updateUserDto.name = captalizeFirstLetterOfEachWordInPhrase(updateUserDto.name);
     }
 
-    const { book, ...rest} = updateUserDto;
+    const { title, ...rest} = updateUserDto;
 
     if(!await this.checkIfEmailExists(updateUserDto.email, id)){
       throw new BadRequestException("This email has been alraedyyy taken")
@@ -80,8 +80,8 @@ export class UsersService {
     });
   }
 
-  remove(id: number) {
-    return this.getuserById(id);
+   async remove(id: number) {
+    await this.getuserById(id);
     return this.prismaService.user.delete({
       where: { id },
     })

@@ -18,7 +18,7 @@ export class MembersService {
     });
 
     if( member) {
-      throw new BadRequestException(`member with ${createMemberDto.name} has been taken`)
+      throw new BadRequestException(`members with ${createMemberDto.name} has been taken`)
     }
     return this.prismaService.member.create({ data: createMemberDto});
   }
